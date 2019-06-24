@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -25,12 +26,83 @@
                 <i class="iconfont icon-key"></i>
                 <input type="text" class="input_txt" placeholder="邮箱/手机号">
                 <input type="password" class="input_pass" placeholder="密码">
-                <input type="submit" class="input_sub" value="登 录">
+                <input type="submit" class="input_sub" id="login_btn" value="登 录">
             </form>
         </div>
 
-    </div> 
+    </div>
+    <!-- 模态框模块 -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
 
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+
+    <script>
+
+        /* 
+        需求 1.给登录按钮注册点击事件 因为from表单有默认跳转事件 所以要设置阻止默认跳转事件
+        1.1获取输入框的用户名和密码
+        1.2发送ajax请求
+        1.3判断：当输入框内的用户名或者密码为空时 弹出信息 输入密码成功 窗口跳转到主页面
+         */
+        $(function () {
+            // 需求 1.给登录按钮注册点击事件    
+            $('#login_btn').on('click', function (e) {
+                // 因为from表单有默认跳转事件 所以要设置阻止默认跳转事件
+                e.preventDefault();
+                // 1.1获取输入框的用户名和密码
+                var userName = $('.input_txt').val().trim();
+                var passWord = $('.input_pass').val().trim();
+                //1.2 如果输入的用户名或者密码为空时 弹出信息用户名或者密码为空
+                if (userName == '' || passWord == '') {
+                    $('.modal-body').text('输入的用户名或者密码为空');
+                    $('#myModal').modal({
+                        keyboard: true
+                    });
+                    return;
+                    // alert('ss');
+                }
+
+                // 1.发送ajax请求
+                $.ajax({
+                    type: 'post',
+                    url: 'http://localhost:8000/admin/login',
+                    data: {
+                        user_name: userName,
+                        password: passWord
+                    },
+                    success: function (backData) {
+                        console.log(backData);
+                        if (backData.code == 200) {
+                            window.location.href = './index.html';
+                        } else {
+                            $('.modal-body').text('输入的用户名或者密码错误');
+                            $('#myModal').modal({
+                                keyboard: true
+                            });
+                        }
+                    }
+                })
+            })
+        })
+    </script>
 </body>
 
 </html>
