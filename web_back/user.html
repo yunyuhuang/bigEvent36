@@ -22,40 +22,40 @@
         <div class="container-fluid common_con">
             <form class="form-horizontal article_form">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">用户名称：</label>
+                    <label for="inputEmail3" class="col-sm-2 control-label" >用户名称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="李思思">
+                        <input type="text" class="form-control username" id="inputEmail3" name='username' value="李思思">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">昵称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="思思">
+                        <input type="text" class="form-control nickname" id="inputEmail3" name='nickname' value="思思">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">邮箱：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="inputEmail3" value="lisisi@126.com">
+                        <input type="text" class="form-control email" id="inputEmail3" name="email" value="lisisi@126.com">
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">用户图标：</label>
                     <div class="col-sm-10">
-                        <img src="images/2.jpg" alt="" class="user_pic">
+                        <img src="images/2.jpg" alt="" class="user_pic" name='user_pic'>
                         <input type="file" id="exampleInputFile">
                     </div>
                 </div>
 
                 <div class="form-group">
-                        <label for="inputEmail3" class="col-sm-2 control-label">密码：</label>
-                        <div class="col-sm-4">
-                            <input type="password" class="form-control" id="inputEmail3" value="12345678">
-                        </div>
+                    <label for="inputEmail3" class="col-sm-2 control-label">密码：</label>
+                    <div class="col-sm-4">
+                        <input type="password" class="form-control password" id="inputEmail3" name="password" value="12345678">
                     </div>
-               
-    
+                </div>
+
+
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button type="submit" class="btn btn-success">修改</button>
@@ -64,7 +64,28 @@
             </form>
         </div>
     </div>
+    <script>
+        $.ajax({
+            type:'get',
+            url:'https://autumnfish.cn/big32/admin/userinfo_get',
+            success:function(backData){
+                if(backData.code == 200){
+                    $('.username').val(backData.data.username);
+                    $('.nickname').val(backData.data.nickname);
+                    $('.email').val(backData.data.email);
+                    $('.user_pic').attr('src',backData.data.user_pic);
+                    $('.password').val(backData.data.password);
+                }
 
+            }
+        })
+        //图片预览
+        $('#exampleInputFile').on('change',function(){
+            var icon = this.files[0]//获取到这个文件选择按钮选中的第一个文件.
+            var url = URL.createObjectURL(icon);//获取到一个url
+            $('.user_pic').attr('src',url);
+        });
+    </script>
 </body>
 
 </html>
