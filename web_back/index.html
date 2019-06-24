@@ -17,8 +17,8 @@
     <div class="sider">
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
-            <img src="images/2.jpg" alt="person">
-            <span>欢迎&nbsp;&nbsp;李思思</span>
+            <img id="user_pic" src="images/2.jpg" alt="person">
+            <span id="nickname">欢迎&nbsp;&nbsp;李思思</span>
             <b>管理员</b>
         </div>
         <div class="menu">
@@ -49,8 +49,8 @@
         </form>
         <div class="user_center_link">
             <a href="user.html" onclick="setMenu(3,0)" target="main_frame">个人中心</a>
-            <img src="images/2.jpg" alt="person">
-            <a href="#" id="tuichu_btn"><i class="iconfont icon-tuichu" ></i> 退出</a>
+            <img id="user_pic2" src="images/2.jpg" alt="person">
+            <a href="#" id="tuichu_btn"><i class="iconfont icon-tuichu"></i> 退出</a>
         </div>
     </div>
 
@@ -119,25 +119,58 @@
          1.2判断 是否退出
         */
         // 1.给点击按钮设置点击事件
-        $('#tuichu_btn').on('click',function(e){
+        $('#tuichu_btn').on('click', function (e) {
             console.log('11');
-            
+
             // 阻止a标签默认跳转事件
             e.preventDefault();
             $.ajax({
-                type:'post',
-                url:'http://localhost:8000/admin/logout',
-                success:function(backData){
-                    if(backData.code == 200 ){
-                        if(confirm('是否要退出当前账号？')){
+                type: 'post',
+                url: 'http://localhost:8000/admin/logout',
+                success: function (backData) {
+                    if (backData.code == 200) {
+                        if (confirm('是否要退出当前账号？')) {
                             window.location.href = './login.html';
                         }
                     }
-                    // console.log(backData);
-                    
-                    
+                    // console.log(backData); 
                 }
             })
+        })
+
+
+
+    </script>
+    <script src="./js/template-web.js"></script>
+    <!-- <script id="temp_user" type="text/html">
+        <div class="user_info">
+                <img id="user_pic" src="{{backData.user_pic}}" alt="person">
+                <span id="nickname">欢迎&nbsp;&nbsp;{{backData.nickname}}</span>
+                <b>管理员</b>
+            </div>
+    </script> -->
+    <script>
+        /*
+        //2.2获取用户信息模块
+        // 2.3 发送ajax请求
+        //2.4导入模板引擎js 定义一个模板引擎 */
+        //2.2获取用户信息模块
+        var nickName = $('#nickname').val();
+        var user_Pic = $('#user_pic').val();
+        var user_Pic2 = $('#user_pic2').val();
+        $.ajax({
+            type: 'get',
+            url: 'http://localhost:8000/admin/getuser',
+            data: {
+                nickname : nickName,
+                user_pic : user_Pic
+            },
+            success: function (backData) {
+                console.log(backData);
+                $('#nickname').text(backData.data.nickname);
+                $('#user_pic').attr('src',backData.data.user_pic);
+                $('#user_pic2').attr('src',backData.data.user_pic);
+            }
         })
     </script>
 </body>
