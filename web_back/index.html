@@ -160,14 +160,10 @@
         var user_Pic2 = $('#user_pic2').val();
         $.ajax({
             type: 'get',
-            url: 'https://autumnfish.cn/big32/admin/getuser',
-            data: {
-                nickname : nickName,
-                user_pic : user_Pic
-            },
+            url: 'http://localhost:8000/admin/getuser   ',
             success: function (backData) {
                 console.log(backData);
-                $('#nickname').text(backData.data.nickname);
+                $('#nickname').html('欢迎&nbsp;&nbsp;'+backData.data.nickname);
                 $('#user_pic').attr('src',backData.data.user_pic);
                 $('#user_pic2').attr('src',backData.data.user_pic);
             }
