@@ -161,10 +161,13 @@
         $.ajax({
             type: 'get',
             url: 'http://localhost:8000/admin/getuser',
-            
+            data: {
+                nickname : nickName,
+                user_pic : user_Pic
+            },
             success: function (backData) {
                 console.log(backData);
-                $('#nickname').html('欢迎&nbsp;&nbsp;'+backData.data.nickname);
+                $('#nickname').text(backData.data.nickname);
                 $('#user_pic').attr('src',backData.data.user_pic);
                 $('#user_pic2').attr('src',backData.data.user_pic);
             }
